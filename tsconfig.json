@@ -23,6 +23,6 @@
       "*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", ".next/types/**/*.ts", "src/widgets/Canvas/ui/Canavs.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", ".next/types/**/*.ts", "src/widgets/Canvas/ui/Canvas.tsx"],
   "exclude": ["node_modules"]
 }

@@ -7,7 +7,7 @@ export const sendPrompt = async (
   setResult: (value: []) => void
 ) => {
   try {
-    const request = await fetch('http://localhost:3001/api/prompts', {
+    const request = await fetch('http://localhost:3000/api/prompts', {
       method: 'POST',
       body: JSON.stringify({
         prompt: `${inputText} ${color && 'color' + ' ' + color} ${styles}`,

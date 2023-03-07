@@ -1,5 +1,6 @@
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import {
+  Box,
   Button,
   Flex,
   Heading,
@@ -18,6 +19,7 @@ import { fetchBody } from 'entities/lib/fetchBody'
 import { fetchToApiNext } from 'entities/lib/fetchToApiNext'
 import { imagePrompt } from 'entities/redux/slices/imagePromptSlice'
 import { isLoading } from 'entities/redux/slices/isLoadingSlice'
+import { isMakeMagic } from 'entities/redux/slices/isMakeMagicSlice'
 import { resultPrompt } from 'entities/redux/slices/resultPromptSlice'
 import { useAppDispatch, useAppSelector } from 'entities/redux/store'
 import { useCallback, useState } from 'react'
@@ -37,7 +39,7 @@ type PalletBlockProps = {
   }[]
 }
 
-const url = 'http://localhost:3001/api/prompts'
+const url = 'http://localhost:3000/api/prompts'
 
 export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
   const [colorId, setColorId] = useState(9)
@@ -45,13 +47,20 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
   const [inputText, setInputText] = useState('')
   const [color, setColor] = useState('')
   const [stylesChoose, setStylesChoose] = useState('')
+  const [showImagePreview, setShowImagePreview] = useState(false)
+  const [imagePreview, setImagePreview] = useState<string | unknown>('')
 
   const dispatch = useAppDispatch()
   const imageFilePrompt = useAppSelector((state) => state.imagePrompt.value)
   const prevPredictionOutput = useAppSelector(
     (state) => state.prevPredictionOutput.value
   )
-  const maskPrompt = useAppSelector((state) => state.maskPrompt.value)
+  const mask = useAppSelector((state) => state.maskPrompt.value)
+  const isMagic = useAppSelector((state) => state.isMakeMagic.value)
+
+  console.log({ imageFilePrompt })
+  console.log({ mask })
+  console.log({ imagePreview })
 
   const handleScrollColors = () => {
     colors?.map((color) => {
@@ -88,15 +97,12 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
   }
 
   const sendPrompt = useCallback(async () => {
-    console.log({ imageFilePrompt })
-
     const image = await convertToBase64(imageFilePrompt)
-    console.log({ image })
 
     try {
       const data = await fetchToApiNext(
         url,
-        fetchBody(image, inputText, color, stylesChoose, maskPrompt)
+        await fetchBody(image, inputText, color, stylesChoose, mask)
       )
 
       const res = await data.json()
@@ -118,6 +124,10 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
     dispatch(imagePrompt(null))
     setInputText('')
     dispatch(isLoading(true))
+    setShowImagePreview(true)
+    const img = await convertToBase64(imageFilePrompt)
+    setImagePreview(mask ? mask : img)
+    dispatch(isMakeMagic(true))
   }
 
   return (
@@ -232,7 +242,14 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
           />
         </Flex>
       </Flex>
-      <Flex direction={'column'} px='14px' pb={'25px'} pt='25px' mb={'10px'}>
+      <Flex
+        direction={'column'}
+        align={'center'}
+        px='14px'
+        pb={'25px'}
+        pt='25px'
+        mb={'10px'}
+      >
         <Heading
           as='h2'
           fontSize={'24px'}
@@ -264,18 +281,20 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
           />
         </InputGroup>
 
-        {false && (
-          <Image
-            src={''}
-            alt={'preview image'}
-            w={'120px'}
-            h={'166px'}
-            border={'1px solid'}
-            borderColor={'#D8246C'}
-            borderRadius={'15px'}
-            alignSelf={'center'}
-            mt={'30px'}
-          />
+        {showImagePreview && (
+          <Box m='auto 0'>
+            <Image
+              src={`${imagePreview}`}
+              alt={'preview image'}
+              w={'120px'}
+              h={'166px'}
+              border={'1px solid'}
+              borderColor={'#D8246C'}
+              borderRadius={'15px'}
+              alignSelf={'center'}
+              mt={'30px'}
+            />
+          </Box>
         )}
       </Flex>
 
@@ -319,6 +338,7 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
         fontSize={'12px'}
         lineHeight={'15px'}
         onClick={addPrompt}
+        isDisabled={isMagic}
       >
         Make Magic
       </Button>

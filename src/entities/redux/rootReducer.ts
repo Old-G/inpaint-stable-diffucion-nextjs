@@ -7,6 +7,8 @@ import maskPromptReducer from './slices/maskPromptSlice'
 import prevPredictionOutputReducer from './slices/prevPredictionOutputSlice'
 import textPromptReducer from './slices/textPromptSlice'
 import stylePromptReducer from './slices/stylePromptSlice'
+import isMakeMagicSliceReducer from './slices/isMakeMagicSlice'
+import isDeleteImageSliceReducer from './slices/isDeleteImageSlice'
 
 export const rootReducer = combineReducers({
   colorPrompt: colorPromptReducer,
@@ -17,5 +19,7 @@ export const rootReducer = combineReducers({
   prevPredictionOutput: prevPredictionOutputReducer,
   textPrompt: textPromptReducer,
   stylePrompt: stylePromptReducer,
+  isMakeMagic: isMakeMagicSliceReducer,
+  isDeleteImage: isDeleteImageSliceReducer,
   // [accountApi.reducerPath]: accountApi.reducer,
 })

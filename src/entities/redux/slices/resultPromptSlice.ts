@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface ResultPromptState {
-  value: Array<T>
+  value: any
 }
 
 const initialState: ResultPromptState = {
@@ -12,10 +12,7 @@ export const resultPromptSlice = createSlice({
   name: 'resultPrompt',
   initialState,
   reducers: {
-    resultPrompt: (
-      state: ResultPromptState,
-      action: PayloadAction<Array<T>>
-    ) => {
+    resultPrompt: (state: ResultPromptState, action: PayloadAction<any>) => {
       state.value = action.payload
     },
   },

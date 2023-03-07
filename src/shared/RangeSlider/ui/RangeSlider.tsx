@@ -22,8 +22,7 @@ export function RangeSlider({ value, setValue }: RangeSliderProps) {
       defaultValue={30}
       value={value}
       onChange={handleChange}
-      maxW={'120px'}
-      w={'100%'}
+      w={'120px'}
     >
       <SliderTrack
         bg='red.100'

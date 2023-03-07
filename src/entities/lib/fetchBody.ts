@@ -3,7 +3,7 @@ export const fetchBody = async (
   text: string,
   color: string,
   styles: string,
-  mask: string,
+  mask: null,
   prevPredictionOutput?: string,
   resize_mode?: number,
   denoising_strength?: number,
