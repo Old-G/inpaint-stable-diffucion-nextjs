@@ -61,7 +61,7 @@ export const fetchBody = async (
     seed_resize_from_h: -1,
     seed_resize_from_w: -1,
     sampler_name: '',
-    batch_size: 1,
+    batch_size: 4,
     n_iter: 1,
     steps: 50,
     cfg_scale: 7,

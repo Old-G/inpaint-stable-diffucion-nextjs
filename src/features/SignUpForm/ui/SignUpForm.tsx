@@ -25,21 +25,26 @@ import { useEffect, useState } from 'react'
 import { TooltipPasswordText } from 'shared/TooltipPasswordText'
 import { doneIcon } from '../../../../public/assets/icons/done-icon'
 import { TooltipEmailText } from 'shared/TooltipEmailText'
+import { notesIcon } from '../../../../public/assets/icons/notes-icon'
 import { eyeIcon } from '../../../../public/assets/icons/eye-icon'
+import { TooltipConfirmPasswordText } from 'shared/TooltipConfirmPasswordText'
 
 type Inputs = {
+  name: string
   email: string
   password: string
+  confirmPassword: string
   required: string
 }
 
 type SignInFormProps = {
-  handleSignUp: () => void
+  handleSignIn: () => void
 }
 
-export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
+export const SignUpForm = ({ handleSignIn }: SignInFormProps) => {
   const [isHovering, setIsHovering] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const {
     handleSubmit,
@@ -48,9 +53,11 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
     formState: { errors, isSubmitting },
   } = useForm<Inputs>()
 
+  const watchName = watch('name')
   const watchEmail = watch('email')
-  const watchPassword = watch('password')
-  console.log(watchEmail)
+  const watchPassword = watch('password', '')
+  const watchConfirmPassword = watch('confirmPassword')
+  console.log(errors.confirmPassword)
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     return new Promise((res) => {
@@ -105,9 +112,9 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
         textTransform={'uppercase'}
         mb={'75px'}
       >
-        Sign In
+        Sign Up
       </Heading>
-      <Flex w='100%' mb={'10px'}>
+      <Flex w='100%' mb={'45px'}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           <VStack
             p='35px 25px'
@@ -138,9 +145,68 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
               p='5px 28px'
               whiteSpace={'nowrap'}
             >
-              {isSubmitting ? 'You are ready to go' : 'Authorization'}
+              {isSubmitting ? 'You are ready to go' : 'All fields is required'}
             </Text>
 
+            <FormControl isInvalid={!!errors.name} w='100%'>
+              <Flex>
+                <Icon as={() => starIcon} />
+                <FormLabel htmlFor='name' ml={'10px'}>
+                  Name
+                </FormLabel>
+                {errors.name && (
+                  <Tooltip
+                    label={'Please enter a name'}
+                    aria-label='A tooltip'
+                    placement={'right'}
+                    bgColor={'white'}
+                    border={'1px solid #EEEEF0'}
+                    borderRadius={'3px'}
+                    color={'black'}
+                    fontSize={'10px'}
+                    lineHeight={'16px'}
+                    fontWeight={500}
+                  >
+                    <Flex cursor={'pointer'} justify={'center'} mt={'2px'}>
+                      <Icon as={() => infoIcon} />
+                    </Flex>
+                  </Tooltip>
+                )}
+              </Flex>
+              <InputGroup>
+                <InputLeftElement
+                  pointerEvents='none'
+                  children={<Icon as={() => notesIcon} />}
+                />
+                <Input
+                  id='name'
+                  type={'text'}
+                  color={'#505A66'}
+                  bgColor={'white'}
+                  fontSize={'14px'}
+                  lineHeight={'17px'}
+                  fontWeight={600}
+                  shadow={'0px 2px 10px rgba(0, 0, 0, 0.05)'}
+                  {...register('name', {
+                    required: 'This is required',
+                    minLength: {
+                      value: 3,
+                      message: 'Name must be at least 3 characters',
+                    },
+                  })}
+                />
+                {!errors.name && watchName && isSubmitting && (
+                  <InputRightElement
+                    pointerEvents='none'
+                    children={<Icon as={() => doneIcon} />}
+                  />
+                )}
+              </InputGroup>
+
+              {/* <FormErrorMessage>
+                {errors.name && errors.name.message}
+              </FormErrorMessage> */}
+            </FormControl>
             <FormControl isInvalid={!!errors.email} w='100%'>
               <Flex>
                 <Icon as={() => starIcon} />
@@ -206,9 +272,15 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
                 <FormLabel htmlFor='name' mx={'10px'}>
                   Password
                 </FormLabel>
-                {errors.password && (
+                {(errors.password || errors.confirmPassword) && (
                   <Tooltip
-                    label={<TooltipPasswordText />}
+                    label={
+                      errors.confirmPassword ? (
+                        <TooltipConfirmPasswordText />
+                      ) : (
+                        <TooltipPasswordText />
+                      )
+                    }
                     aria-label='A tooltip'
                     placement={'right'}
                     bgColor={'white'}
@@ -265,15 +337,60 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
                 {errors.password && errors.password.message}
               </FormErrorMessage> */}
             </FormControl>
+
+            <FormControl isInvalid={!!errors.confirmPassword}>
+              <InputGroup>
+                <InputLeftElement
+                  pointerEvents='none'
+                  children={<Icon as={() => keyIcon(showConfirmPassword)} />}
+                />
+                <Input
+                  id='confirmPassword'
+                  fontSize={'14px'}
+                  lineHeight={'17px'}
+                  fontWeight={600}
+                  bgColor={'white'}
+                  shadow={'0px 2px 10px rgba(0, 0, 0, 0.05)'}
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  {...register('confirmPassword', {
+                    validate: (value) =>
+                      value === watchPassword || 'The passwords do not match',
+                    pattern: {
+                      value:
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,}$/,
+                      message: '',
+                      // 'Password must contain at least 8 characters with at least one uppercase letter, one lowercase letter, one number and one special character',
+                    },
+                    required: 'This is required',
+                  })}
+                />
+                {!errors.confirmPassword &&
+                watchConfirmPassword &&
+                isSubmitting ? (
+                  <InputRightElement
+                    pointerEvents='none'
+                    children={<Icon as={() => doneIcon} />}
+                  />
+                ) : (
+                  <InputRightElement
+                    cursor={'pointer'}
+                    children={<Icon as={() => eyeIcon} />}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  />
+                )}
+              </InputGroup>
+              {/* <FormErrorMessage>
+                {errors.confirmPassword && errors.confirmPassword.message}
+              </FormErrorMessage> */}
+            </FormControl>
           </VStack>
 
           <Button
-            bgColor={'white'}
-            color={'#262C40'}
-            // p={'0px 105px'}
+            bgColor={'#D8246C'}
+            color={'white'}
             w='100%'
             h='44px'
-            border={'1px solid #D8246C'}
+            border={'1px solid #cccccc'}
             borderRadius={'5px'}
             fontSize={'16px'}
             lineHeight={'19px'}
@@ -284,43 +401,9 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
             transition={'all .2s ease-in-out'}
             _hover={{ transform: 'scale(1.03)' }}
           >
-            Sign In
+            Create Account
           </Button>
         </form>
-      </Flex>
-
-      <Flex align={'center'} mb={'35px'} position='relative'>
-        <Text
-          fontSize={'12px'}
-          lineHeight={'15px'}
-          fontWeight={500}
-          color={'#696C7D'}
-          mr={'5px'}
-        >
-          Forgot password?
-        </Text>
-        <Link
-          href={''}
-          fontSize={'12px'}
-          lineHeight={'15px'}
-          fontWeight={500}
-          color={'#D8246C'}
-          _hover={{ textDecoration: 'none' }}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        >
-          Click here
-        </Link>
-
-        <Image
-          src={'/assets/icons/cat-icon.png'}
-          alt='cat'
-          position={'absolute'}
-          top={'20px'}
-          right={'0px'}
-          opacity={isHovering ? 1 : 0}
-          transition={'opacity 0.3s ease-in-out'}
-        />
       </Flex>
 
       <Text
@@ -330,23 +413,24 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
         color={'#696C7D'}
         mb={'10px'}
       >
-        I don't have an account
+        I already have an account
       </Text>
 
       <Button
-        bgColor={'#D8246C'}
-        color={'white'}
-        // p={'0px 105px'}
+        bgColor={'white'}
+        color={'#262C40'}
         w='100%'
         h='44px'
-        border={'1px solid #cccccc'}
+        border={'1px solid #D8246C'}
         borderRadius={'5px'}
         fontSize={'16px'}
         lineHeight={'19px'}
         fontWeight={500}
-        onClick={handleSignUp}
+        transition={'all .2s ease-in-out'}
+        _hover={{ transform: 'scale(1.03)' }}
+        onClick={handleSignIn}
       >
-        Create account
+        Sign In
       </Button>
     </Flex>
   )

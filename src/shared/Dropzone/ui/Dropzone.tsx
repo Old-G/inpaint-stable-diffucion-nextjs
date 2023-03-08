@@ -1,5 +1,6 @@
 import { Box, Image, Text, VStack } from '@chakra-ui/react'
 import { imagePrompt } from 'entities/redux/slices/imagePromptSlice'
+import { isDeleteImage } from 'entities/redux/slices/isDeleteImageSlice'
 import { isMakeMagic } from 'entities/redux/slices/isMakeMagicSlice'
 import { useAppDispatch, useAppSelector } from 'entities/redux/store'
 import React from 'react'
@@ -16,15 +17,21 @@ export function Dropzone({ canvasImage, setCanvasImage }: DropzoneProps) {
   const resultPrompt = useAppSelector((state) => state.resultPrompt.value)
 
   const onDrop = async (acceptedFiles: any[]) => {
-    const image = acceptedFiles[0]
+    const image = acceptedFiles?.[0]
+    dispatch(isDeleteImage(false))
 
     dispatch(isMakeMagic(false))
     setCanvasImage(image)
     // dispatch(imagePrompt(image))
   }
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'image/*': ['.png', '.jpg', '.jpeg'],
+    },
+  })
 
-  if (resultPrompt.length) return null
+  if (resultPrompt?.length) return null
 
   if (canvasImage) return null
 

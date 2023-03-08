@@ -11,6 +11,7 @@ import {
   InputGroup,
   InputLeftElement,
   Text,
+  useToast,
   VStack,
   Wrap,
 } from '@chakra-ui/react'
@@ -20,9 +21,10 @@ import { fetchToApiNext } from 'entities/lib/fetchToApiNext'
 import { imagePrompt } from 'entities/redux/slices/imagePromptSlice'
 import { isLoading } from 'entities/redux/slices/isLoadingSlice'
 import { isMakeMagic } from 'entities/redux/slices/isMakeMagicSlice'
+import { maskPrompt } from 'entities/redux/slices/maskPromptSlice'
 import { resultPrompt } from 'entities/redux/slices/resultPromptSlice'
 import { useAppDispatch, useAppSelector } from 'entities/redux/store'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { PalletColor } from 'shared/PalletColor'
 import { PalletStyle } from 'shared/PalletStyle'
 import { magicWandIcon } from '../../../../public/assets/icons/magic-wand-icon'
@@ -49,6 +51,9 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
   const [stylesChoose, setStylesChoose] = useState('')
   const [showImagePreview, setShowImagePreview] = useState(false)
   const [imagePreview, setImagePreview] = useState<string | unknown>('')
+  const [imagePreviewMask, setImagePreviewMask] = useState<string | unknown>('')
+
+  const toast = useToast()
 
   const dispatch = useAppDispatch()
   const imageFilePrompt = useAppSelector((state) => state.imagePrompt.value)
@@ -57,10 +62,7 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
   )
   const mask = useAppSelector((state) => state.maskPrompt.value)
   const isMagic = useAppSelector((state) => state.isMakeMagic.value)
-
-  console.log({ imageFilePrompt })
-  console.log({ mask })
-  console.log({ imagePreview })
+  const isDelete = useAppSelector((state) => state.isDeleteImage.value)
 
   const handleScrollColors = () => {
     colors?.map((color) => {
@@ -105,28 +107,47 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
         await fetchBody(image, inputText, color, stylesChoose, mask)
       )
 
-      const res = await data.json()
+      const res = await data?.json()
 
       if (res.message) {
-        console.log(res.message)
-
         dispatch(isLoading(false))
         dispatch(resultPrompt(res.result))
+
+        toast({
+          title: 'Success',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+          position: 'top-right',
+        })
       }
     } catch (error) {
-      console.log(error)
+      console.log({ error })
+      dispatch(isLoading(false))
+
+      toast({
+        title: 'Error',
+        description:
+          'Something went wrong! Please try again or reload the page',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-right',
+      })
     }
-  }, [imageFilePrompt, inputText, color, styles, prevPredictionOutput])
+  }, [imageFilePrompt, inputText, color, styles])
 
   const addPrompt = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
     sendPrompt()
     dispatch(imagePrompt(null))
+    dispatch(maskPrompt(null))
     setInputText('')
     dispatch(isLoading(true))
     setShowImagePreview(true)
     const img = await convertToBase64(imageFilePrompt)
-    setImagePreview(mask ? mask : img)
+    setImagePreview(img)
+    setImagePreviewMask(mask)
     dispatch(isMakeMagic(true))
   }
 
@@ -281,8 +302,8 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
           />
         </InputGroup>
 
-        {showImagePreview && (
-          <Box m='auto 0'>
+        {showImagePreview && !isDelete && (
+          <Box position='relative' mt={'30px'}>
             <Image
               src={`${imagePreview}`}
               alt={'preview image'}
@@ -292,7 +313,17 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
               borderColor={'#D8246C'}
               borderRadius={'15px'}
               alignSelf={'center'}
-              mt={'30px'}
+            />
+            <Image
+              src={`${imagePreviewMask}`}
+              alt={'preview image'}
+              w={'120px'}
+              h={'166px'}
+              borderRadius={'15px'}
+              alignSelf={'center'}
+              position='absolute'
+              top={'0px'}
+              left={'0px'}
             />
           </Box>
         )}

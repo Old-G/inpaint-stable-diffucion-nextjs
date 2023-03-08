@@ -4,6 +4,7 @@ import React from 'react'
 import theme from './styles/theme'
 import { Provider } from 'react-redux'
 import { store } from 'entities/redux/store'
+import ErrorBoundary from 'entities/ErrorBoundary/ErrorBoundary'
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -11,7 +12,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
       <CacheProvider>
         <ChakraProvider>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          {children}
+          <ErrorBoundary>{children}</ErrorBoundary>
         </ChakraProvider>
       </CacheProvider>
     </Provider>

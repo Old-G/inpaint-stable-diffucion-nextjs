@@ -72,11 +72,7 @@ export function Canvas({ canvasImage, setCanvasImage }: CanvasProps) {
     canvasRef?.current?.undo()
   }
 
-  const handleChangeImage = async (e: { preventDefault: () => void }) => {
-    e.preventDefault()
-    dispatch(resultPrompt([]))
-    dispatch(maskPrompt(null))
-    dispatch(imagePrompt(null))
+  const handleChangeImage = async () => {
     setCanvasImage(null)
     // setIsEraser(false)
     // setError(null);
@@ -120,14 +116,11 @@ export function Canvas({ canvasImage, setCanvasImage }: CanvasProps) {
           ))} */}
 
         {canvasImage && (
-          <Box m='auto 0'>
-            <Image
-              src={URL.createObjectURL(canvasImage)}
-              alt='preview image'
-              bgSize={'contain'}
-              bgRepeat={'no-repeat'}
-            />
-          </Box>
+          <Image
+            src={URL.createObjectURL(canvasImage)}
+            alt='preview image'
+            m='auto 0'
+          />
         )}
 
         {/* {predicting && (
@@ -152,9 +145,9 @@ export function Canvas({ canvasImage, setCanvasImage }: CanvasProps) {
             </p>
           </Box>
         </Box>
-      )} */}
+        )} */}
 
-        {(result.length > 0 || canvasImage) && !predicting && (
+        {(result?.length > 0 || canvasImage) && !predicting && (
           <Box
             position='absolute'
             top='0'
@@ -172,11 +165,12 @@ export function Canvas({ canvasImage, setCanvasImage }: CanvasProps) {
               <ReactSketchCanvas
                 ref={canvasRef}
                 strokeWidth={value}
+                exportWithBackgroundImage
+                // backgroundImage={URL.createObjectURL(canvasImage)}
                 // eraserWidth={50}
                 strokeColor='white'
                 canvasColor='transparent'
                 onChange={onChange}
-                exportWithBackgroundImage={true}
               />
             </Flex>
             <Button
@@ -187,7 +181,7 @@ export function Canvas({ canvasImage, setCanvasImage }: CanvasProps) {
               border={'1px solid'}
               borderColor={'#E4E8F2'}
               position={'absolute'}
-              zIndex={result.length + 102}
+              zIndex={result?.length + 102}
               bottom={'10px'}
               right={'15px'}
               _hover={{ bgColor: '#FFD8DF' }}
@@ -212,7 +206,7 @@ export function Canvas({ canvasImage, setCanvasImage }: CanvasProps) {
                 justify={'space-between'}
                 position={'absolute'}
                 bgColor={'#ffffffe6'}
-                zIndex={resultPrompt.length + 101}
+                zIndex={resultPrompt?.length + 101}
               >
                 <Flex
                   direction={'column'}

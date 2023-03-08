@@ -1,3 +1,5 @@
+'use client'
+
 import { Flex, Button, Icon, Image, Text } from '@chakra-ui/react'
 import { SetStateAction } from 'react'
 import { RangeSlider } from 'shared/RangeSlider'

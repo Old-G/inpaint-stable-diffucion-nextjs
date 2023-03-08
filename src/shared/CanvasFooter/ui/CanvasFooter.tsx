@@ -1,3 +1,5 @@
+'use client'
+
 import { Button, Flex, Icon } from '@chakra-ui/react'
 import { imagePrompt } from 'entities/redux/slices/imagePromptSlice'
 import { isDeleteImage } from 'entities/redux/slices/isDeleteImageSlice'
