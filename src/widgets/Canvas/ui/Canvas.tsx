@@ -12,10 +12,10 @@ import { resultPrompt } from 'entities/redux/slices/resultPromptSlice'
 
 type CanvasProps = {
   canvasImage: Blob
-  setCanvasImage: (image: any) => void
+  setCanvasImageMask: (image: any) => void
 }
 
-export function Canvas({ canvasImage, setCanvasImage }: CanvasProps) {
+export function Canvas({ canvasImage, setCanvasImageMask }: CanvasProps) {
   const canvasRef = useRef<any>(null)
   const [predicting, setPredicting] = useState(false)
   const [lastPrediction, setLastPrediction] = useState(null)
@@ -24,8 +24,8 @@ export function Canvas({ canvasImage, setCanvasImage }: CanvasProps) {
 
   const dispatch = useAppDispatch()
   // const imageFilePrompt = useAppSelector((state) => state.imagePrompt.value)
-  const result = useAppSelector((state) => state.resultPrompt.value)
-  const deleteImage = useAppSelector((state) => state.isDeleteImage.value)
+  const result = useAppSelector((state) => state?.resultPrompt?.value)
+  const deleteImage = useAppSelector((state) => state?.isDeleteImage?.value)
 
   async function clearCanvas() {
     await canvasRef?.current?.resetCanvas()
@@ -34,9 +34,9 @@ export function Canvas({ canvasImage, setCanvasImage }: CanvasProps) {
   useEffect(() => {
     if (deleteImage) {
       clearCanvas()
-      setCanvasImage(null)
+      setCanvasImageMask('')
     }
-  }, [deleteImage])
+  }, [deleteImage, setCanvasImageMask])
 
   // useEffect(() => {
   //   const predictions = resultPrompt.map((prediction) => {
@@ -53,10 +53,11 @@ export function Canvas({ canvasImage, setCanvasImage }: CanvasProps) {
   const onChange = async () => {
     const paths = await canvasRef?.current?.exportPaths()
 
-    if (paths.length) {
+    if (paths?.length) {
       const data = await canvasRef?.current?.exportImage('png')
 
-      dispatch(maskPrompt(data))
+      setCanvasImageMask(data)
+      // dispatch(maskPrompt(data))
     }
   }
 
@@ -73,7 +74,7 @@ export function Canvas({ canvasImage, setCanvasImage }: CanvasProps) {
   }
 
   const handleChangeImage = async () => {
-    setCanvasImage(null)
+    setCanvasImageMask('')
     // setIsEraser(false)
     // setError(null);
   }
@@ -154,7 +155,7 @@ export function Canvas({ canvasImage, setCanvasImage }: CanvasProps) {
             left='0'
             w='100%'
             h='100%'
-            zIndex={result.length + 100}
+            zIndex={result?.length + 100}
           >
             <Flex
               w='100%'

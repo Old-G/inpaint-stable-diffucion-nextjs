@@ -4,22 +4,40 @@ import { Button, Flex, Icon } from '@chakra-ui/react'
 import { imagePrompt } from 'entities/redux/slices/imagePromptSlice'
 import { isDeleteImage } from 'entities/redux/slices/isDeleteImageSlice'
 import { maskPrompt } from 'entities/redux/slices/maskPromptSlice'
-import { resultPrompt } from 'entities/redux/slices/resultPromptSlice'
-import { useAppDispatch } from 'entities/redux/store'
+import {
+  removeItem,
+  resultPrompt,
+} from 'entities/redux/slices/resultPromptSlice'
+import { useAppDispatch, useAppSelector } from 'entities/redux/store'
 import { addToIcon } from '../../../../public/assets/icons/add-to-icon'
 import { downloadIcon } from '../../../../public/assets/icons/download-icon'
 import { trashIcon } from '../../../../public/assets/icons/trash-icon'
 
-export const CanvasFooter = () => {
+type CanvasFooterProps = {
+  idx: number
+}
+
+export const CanvasFooter = ({ idx }: CanvasFooterProps) => {
   const dispatch = useAppDispatch()
 
-  const handleDelete = () => {
-    dispatch(resultPrompt([]))
-    dispatch(isDeleteImage(true))
-    dispatch(maskPrompt(null))
-    dispatch(imagePrompt(null))
-  }
+  const result = useAppSelector((state) => state?.resultPrompt?.value)
 
+  const handleDelete = (idx: number) => {
+    console.log(idx)
+
+    // const filteredItems = result?.filter((item: number) => item !== idx)
+    // const qq = result.splice(
+    //   result.findIndex((arrow) => arrow.id === action.payload),
+    //   1
+    // )
+    dispatch(removeItem(idx))
+    // console.log(qq)
+
+    // dispatch(resultPrompt([]))
+    dispatch(isDeleteImage(true))
+    dispatch(maskPrompt(''))
+    dispatch(imagePrompt(''))
+  }
   return (
     <Flex
       position={'absolute'}
@@ -46,7 +64,7 @@ export const CanvasFooter = () => {
             'linear-gradient(180deg, rgba(254, 237, 198, 0.68) 5.73%, rgba(255, 183, 212, 0.68) 100%)',
         }}
         rightIcon={<Icon as={() => trashIcon} />}
-        onClick={handleDelete}
+        onClick={() => handleDelete(idx)}
       >
         Delete
       </Button>

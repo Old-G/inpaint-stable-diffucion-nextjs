@@ -1,37 +1,37 @@
 'use client'
 
 import {
-  Box,
   Flex,
-  Image,
   Progress,
   Spinner,
   useToast,
   VStack,
+  Wrap,
 } from '@chakra-ui/react'
 import { Canvas } from 'widgets/Canvas'
 import { Dropzone } from 'shared/Dropzone'
 import { useAppDispatch, useAppSelector } from 'entities/redux/store'
-import { prevPredictionOutput } from 'entities/redux/slices/prevPredictionOutputSlice'
 import { useEffect, useState } from 'react'
 import { imagePrompt } from 'entities/redux/slices/imagePromptSlice'
-import { CanvasFooter } from 'shared/CanvasFooter'
 import { isMakeMagic } from 'entities/redux/slices/isMakeMagicSlice'
+import { maskPrompt } from 'entities/redux/slices/maskPromptSlice'
+import { GeneratedCard } from 'shared/GeneratedCard'
 
 export const MyLookPage = () => {
-  const [canvasImage, setCanvasImage] = useState<any>(null)
+  const [canvasImage, setCanvasImage] = useState<any>('')
+  const [canvasImageMask, setCanvasImageMask] = useState<any>('')
   const dispatch = useAppDispatch()
   const toast = useToast()
 
-  const resultPrompt = useAppSelector((state) => state.resultPrompt.value)
-  const imageFilePrompt = useAppSelector((state) => state.imagePrompt.value)
-  const mask = useAppSelector((state) => state.maskPrompt.value)
+  const result = useAppSelector((state) => state?.resultPrompt?.value)
 
-  const loading = useAppSelector((state) => state.isLoading.value)
+  console.log(result)
+
+  const loading = useAppSelector((state) => state?.isLoading?.value)
 
   useEffect(() => {
     // @ts-ignore
-    if (imageFilePrompt && imageFilePrompt?.size / 1024 >= 1000) {
+    if (canvasImage && canvasImage?.size / 1024 >= 1000) {
       toast({
         title: 'Image is too large',
         description: 'Please upload an image less than 1MB',
@@ -42,88 +42,59 @@ export const MyLookPage = () => {
       })
 
       dispatch(isMakeMagic(true))
-    } else {
-      dispatch(isMakeMagic(false))
     }
-  }, [imageFilePrompt])
+  }, [canvasImage, dispatch, toast])
 
   useEffect(() => {
     if (canvasImage) {
       dispatch(imagePrompt(canvasImage))
     }
-  }, [canvasImage])
+    if (canvasImageMask) {
+      dispatch(maskPrompt(canvasImageMask))
+    }
+  }, [canvasImage, canvasImageMask, dispatch])
+
+  // const handleDelete = (idx: number) => {
+  //   const filteredItems = result?.filter((item: number) => item !== idx)
+  //   dispatch(resultPrompt(filteredItems))
+  //   console.log(filteredItems)
+
+  //   // dispatch(resultPrompt([]))
+  //   dispatch(isDeleteImage(true))
+  //   dispatch(maskPrompt(''))
+  //   dispatch(imagePrompt(''))
+  // }
 
   return (
     <VStack
       w='calc(100vw - 340px)'
-      h='100vh'
+      minH='100vh'
       justify={'center'}
       align='center'
       flexGrow={1}
     >
-      {resultPrompt?.length > 0 ? (
-        <>
-          {resultPrompt?.length > 0 &&
-            resultPrompt?.map(
-              (item: { result: { images: any[] } }, index: number) => (
-                <Flex
-                  direction={'column'}
-                  position='relative'
-                  justify={'center'}
-                  align={'center'}
-                  overflow='hidden'
-                  h={'710px'}
-                  maxW={'500px'}
-                  w='100%'
-                  border={'1px solid'}
-                  borderColor={'#D8246C'}
-                  borderRadius={'15px'}
-                  bgGradient={
-                    'linear-gradient(38.84deg, rgba(255, 141, 187, 0.351) 0%, rgba(255, 237, 199, 0.7) 100%)'
-                  }
-                  shadow={'0px 2px 10px rgba(0, 0, 0, 0.05)'}
-                  key={index + 1}
-                >
-                  <Box m='auto 0'>
-                    <Image
-                      src={`data:image/png;base64,${item?.result?.images?.[0]}`}
-                      alt={'image'}
-                    />
-                  </Box>
-
-                  <CanvasFooter />
-                </Flex>
-              )
-            )}
-          {resultPrompt?.map((item: { result: { images: any[] } }) => {
-            item?.result?.images?.map((image, index) => (
-              <Flex
-                direction={'column'}
-                position='relative'
-                justify={'center'}
-                align={'center'}
-                overflow='hidden'
-                h={'710px'}
-                maxW={'500px'}
-                w='100%'
-                border={'1px solid'}
-                borderColor={'#D8246C'}
-                borderRadius={'15px'}
-                bgGradient={
-                  'linear-gradient(38.84deg, rgba(255, 141, 187, 0.351) 0%, rgba(255, 237, 199, 0.7) 100%)'
-                }
-                shadow={'0px 2px 10px rgba(0, 0, 0, 0.05)'}
-                key={index + 1}
-              >
-                <Box m='auto 0'>
-                  <Image src={`data:image/png;base64,${image}`} alt={'image'} />
-                </Box>
-
-                <CanvasFooter />
-              </Flex>
-            ))
-          })}
-        </>
+      {result?.length ? (
+        <Wrap
+          w={'100%'}
+          h={'100%'}
+          spacing={'15px'}
+          p={'30px'}
+          align={'center'}
+          justifySelf={'flex-start'}
+        >
+          {result?.map((item: { result: { images: any[] } }, idx: number) => (
+            <Flex key={idx}>
+              {item?.result?.images?.map((item, index) => (
+                <GeneratedCard
+                  key={index}
+                  idx={idx}
+                  image={item}
+                  // handleDelete={handleDelete}
+                />
+              ))}
+            </Flex>
+          ))}
+        </Wrap>
       ) : (
         <>
           {!canvasImage ? (
@@ -146,7 +117,10 @@ export const MyLookPage = () => {
               />
             </Flex>
           ) : (
-            <Canvas canvasImage={canvasImage} setCanvasImage={setCanvasImage} />
+            <Canvas
+              canvasImage={canvasImage}
+              setCanvasImageMask={setCanvasImageMask}
+            />
           )}
 
           {loading && (

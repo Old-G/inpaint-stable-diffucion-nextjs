@@ -1,9 +1,10 @@
 export const fetchBody = async (
-  image: Blob | unknown,
-  text: string,
-  color: string,
-  styles: string,
-  mask: null,
+  image: string,
+  text?: string,
+  styles?: string,
+  color?: string,
+  mask?: string,
+  batch_size?: number,
   prevPredictionOutput?: string,
   resize_mode?: number,
   denoising_strength?: number,
@@ -20,7 +21,6 @@ export const fetchBody = async (
   seed_resize_from_h?: number,
   seed_resize_from_w?: number,
   sampler_name?: string,
-  batch_size?: number,
   n_iter?: number,
   steps?: number,
   cfg_scale?: number,
@@ -42,10 +42,12 @@ export const fetchBody = async (
   script_name?: string
 ) => {
   return {
-    init_images: [`${image || mask}`],
+    init_images: [`${image}`],
     prompt: `${text} ${color && 'color' + ' ' + color} ${styles}`,
     styles: [`${styles}`],
     mask: mask,
+    init_img_with_mask: [mask],
+    batch_size: 4,
     resize_mode: 0,
     denoising_strength: 0.75,
     image_cfg_scale: 0,
@@ -61,7 +63,6 @@ export const fetchBody = async (
     seed_resize_from_h: -1,
     seed_resize_from_w: -1,
     sampler_name: '',
-    batch_size: 4,
     n_iter: 1,
     steps: 50,
     cfg_scale: 7,
@@ -77,7 +78,11 @@ export const fetchBody = async (
     s_noise: 1,
     override_settings: {},
     override_settings_restore_afterwards: true,
-    script_args: [],
+    script_args: [
+      // {
+      //   batch_size: batch_size || 4,
+      // },
+    ],
     sampler_index: 'Euler',
     include_init_images: false,
     script_name: '',

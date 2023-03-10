@@ -1,3 +1,6 @@
+/* eslint-disable react/no-children-prop */
+'use client'
+
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -56,17 +59,15 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
   const toast = useToast()
 
   const dispatch = useAppDispatch()
-  const imageFilePrompt = useAppSelector((state) => state.imagePrompt.value)
-  const prevPredictionOutput = useAppSelector(
-    (state) => state.prevPredictionOutput.value
-  )
-  const mask = useAppSelector((state) => state.maskPrompt.value)
-  const isMagic = useAppSelector((state) => state.isMakeMagic.value)
-  const isDelete = useAppSelector((state) => state.isDeleteImage.value)
+
+  const imageFilePrompt = useAppSelector((state) => state?.imagePrompt?.value)
+  const mask = useAppSelector((state) => state?.maskPrompt?.value)
+  const isMagic = useAppSelector((state) => state?.isMakeMagic?.value)
+  const isDelete = useAppSelector((state) => state?.isDeleteImage?.value)
 
   const handleScrollColors = () => {
     colors?.map((color) => {
-      if (color.id === '8') {
+      if (color?.id === '8') {
         setColorId(colorId + 1)
         const div = document.getElementById(`${colorId}`)
 
@@ -99,13 +100,29 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
   }
 
   const sendPrompt = useCallback(async () => {
-    const image = await convertToBase64(imageFilePrompt)
-
     try {
-      const data = await fetchToApiNext(
-        url,
-        await fetchBody(image, inputText, color, stylesChoose, mask)
-      )
+      // const body = await fetchBody(image, inputText, stylesChoose, color, mask)
+      const image = await convertToBase64(imageFilePrompt)
+
+      const data = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({
+          init_images: [`${image ? image : mask}`],
+          prompt: `${inputText} ${
+            color && 'color' + ' ' + color
+          } ${stylesChoose}`,
+          styles: [`${stylesChoose}`],
+          // batch_size: 4,
+          mask: `${mask}`,
+          init_img_with_mask: [`${image}`, `${mask}`],
+          // mode: 2,
+          // n_iter: 1,
+          // script_args: [{ batch_size: 4 }],
+        }),
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
 
       const res = await data?.json()
 
@@ -135,13 +152,13 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
         position: 'top-right',
       })
     }
-  }, [imageFilePrompt, inputText, color, styles])
+  }, [imageFilePrompt, mask, inputText, color, stylesChoose, dispatch, toast])
 
   const addPrompt = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
     sendPrompt()
-    dispatch(imagePrompt(null))
-    dispatch(maskPrompt(null))
+    dispatch(imagePrompt(''))
+    dispatch(maskPrompt(''))
     setInputText('')
     dispatch(isLoading(true))
     setShowImagePreview(true)
@@ -277,6 +294,7 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
           lineHeight={'29px'}
           textTransform={'uppercase'}
           mb='25px'
+          alignSelf={'flex-start'}
         >
           Idea
         </Heading>

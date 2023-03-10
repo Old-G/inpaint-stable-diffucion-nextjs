@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import {
   Button,
   Flex,
@@ -21,13 +22,14 @@ import { emailIcon } from '../../../../public/assets/icons/email-icon'
 import { keyIcon } from '../../../../public/assets/icons/key-icon'
 import { starIcon } from '../../../../public/assets/icons/star-icon'
 import { infoIcon } from '../../../../public/assets/icons/info-icon'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { TooltipPasswordText } from 'shared/TooltipPasswordText'
 import { doneIcon } from '../../../../public/assets/icons/done-icon'
 import { TooltipEmailText } from 'shared/TooltipEmailText'
 import { notesIcon } from '../../../../public/assets/icons/notes-icon'
 import { eyeIcon } from '../../../../public/assets/icons/eye-icon'
 import { TooltipConfirmPasswordText } from 'shared/TooltipConfirmPasswordText'
+import { debounce } from 'debounce'
 
 type Inputs = {
   name: string
@@ -53,11 +55,32 @@ export const SignUpForm = ({ handleSignIn }: SignInFormProps) => {
     formState: { errors, isSubmitting },
   } = useForm<Inputs>()
 
+  const onChangeName = () => {
+    debounce(() => {
+      watch('name')
+    }, 300)
+  }
+  const onChangeEmail = () => {
+    debounce(() => {
+      watch('email')
+    }, 300)
+  }
+  const onChangePassword = () => {
+    debounce(() => {
+      watch('password')
+    }, 300)
+  }
+  const onChangeConfirmPassword = () => {
+    debounce(() => {
+      watch('confirmPassword')
+    }, 300)
+  }
+
   const watchName = watch('name')
   const watchEmail = watch('email')
   const watchPassword = watch('password', '')
   const watchConfirmPassword = watch('confirmPassword')
-  console.log(errors.confirmPassword)
+  console.log(name)
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     return new Promise((res) => {
@@ -194,6 +217,7 @@ export const SignUpForm = ({ handleSignIn }: SignInFormProps) => {
                       message: 'Name must be at least 3 characters',
                     },
                   })}
+                  onChange={onChangeName}
                 />
                 {!errors.name && watchName && isSubmitting && (
                   <InputRightElement
@@ -253,6 +277,7 @@ export const SignUpForm = ({ handleSignIn }: SignInFormProps) => {
                       message: 'Invalid email address',
                     },
                   })}
+                  onChange={onChangeEmail}
                 />
                 {!errors.email && watchEmail && isSubmitting && (
                   <InputRightElement
@@ -319,6 +344,7 @@ export const SignUpForm = ({ handleSignIn }: SignInFormProps) => {
                     },
                     required: 'This is required',
                   })}
+                  onChange={onChangePassword}
                 />
                 {!errors.password && watchPassword && isSubmitting ? (
                   <InputRightElement
@@ -363,6 +389,7 @@ export const SignUpForm = ({ handleSignIn }: SignInFormProps) => {
                     },
                     required: 'This is required',
                   })}
+                  onChange={onChangeConfirmPassword}
                 />
                 {!errors.confirmPassword &&
                 watchConfirmPassword &&

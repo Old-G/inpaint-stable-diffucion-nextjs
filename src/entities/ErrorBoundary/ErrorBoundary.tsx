@@ -1,4 +1,4 @@
-import React, { ErrorInfo } from 'react'
+import React, { ErrorInfo, Suspense } from 'react'
 
 interface ErrorBoundaryProps {
   children: React.ReactNode
@@ -34,15 +34,17 @@ class ErrorBoundary extends React.Component<
     if (hasError) {
       // You can render any custom fallback UI
       return (
-        <div>
-          <h2>Oops, there is an error!</h2>
-          <button
-            type='button'
-            onClick={() => this.setState({ hasError: false })}
-          >
-            Try again?
-          </button>
-        </div>
+        <Suspense fallback={''}>
+          <div>
+            <h2>Oops, there is an error!</h2>
+            <button
+              type='button'
+              onClick={() => this.setState({ hasError: false })}
+            >
+              Try again?
+            </button>
+          </div>
+        </Suspense>
       )
     }
 

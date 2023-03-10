@@ -1,3 +1,5 @@
+'use client'
+
 import { VStack } from '@chakra-ui/react'
 import { NavBlock } from 'shared/NavBlock'
 import { PalletBlock } from 'shared/PalletBlock'

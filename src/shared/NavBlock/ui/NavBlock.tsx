@@ -1,5 +1,8 @@
-import { Flex, Image, Text, VStack } from '@chakra-ui/react'
+'use client'
+
+import { Flex, Icon, Image, Text, VStack } from '@chakra-ui/react'
 import Link from 'next/link'
+import { closeIcon } from '../../../../public/assets/icons/close-icon'
 
 export const NavBlock = () => {
   return (
@@ -23,13 +26,7 @@ export const NavBlock = () => {
         <Link href={'/my-look'}>
           <Image src={'/assets/icons/logo.svg'} alt='logo' cursor={'pointer'} />
         </Link>
-        <Image
-          src={'/assets/icons/close-icon.svg'}
-          w='20px'
-          h='20px'
-          alt='close'
-          cursor={'pointer'}
-        />
+        <Icon as={() => closeIcon()} cursor={'pointer'} />
       </Flex>
       <Flex
         pl='15px'

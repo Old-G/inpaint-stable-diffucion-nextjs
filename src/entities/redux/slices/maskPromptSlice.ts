@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface MaskPromptState {
-  value: null
+  value: string
 }
 
 const initialState: MaskPromptState = {
-  value: null,
+  value: '',
 }
 
 export const maskPromptSlice = createSlice({
   name: 'maskPrompt',
   initialState,
   reducers: {
-    maskPrompt: (state: MaskPromptState, action: PayloadAction<null>) => {
+    maskPrompt: (state: MaskPromptState, action: PayloadAction<string>) => {
       state.value = action.payload
     },
   },

@@ -13,7 +13,7 @@ export const infoIcon = (
       x2='9.30005'
       y2='17.2192'
       stroke='white'
-      stroke-Width='2'
+      strokeWidth='2'
     />
     <ellipse cx='9.32083' cy='6.22226' rx='1.33157' ry='1.3746' fill='white' />
   </svg>

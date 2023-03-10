@@ -15,9 +15,13 @@ export const resultPromptSlice = createSlice({
     resultPrompt: (state: ResultPromptState, action: PayloadAction<any>) => {
       state.value = action.payload
     },
+
+    removeItem: (state: ResultPromptState, action: PayloadAction<any>) => {
+      state.value = state.value.filter((item: any) => item !== action.payload)
+    },
   },
 })
 
-export const { resultPrompt } = resultPromptSlice.actions
+export const { resultPrompt, removeItem } = resultPromptSlice.actions
 
 export default resultPromptSlice.reducer

@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/no-children-prop */
 import {
   Button,
   Flex,
@@ -26,6 +28,7 @@ import { TooltipPasswordText } from 'shared/TooltipPasswordText'
 import { doneIcon } from '../../../../public/assets/icons/done-icon'
 import { TooltipEmailText } from 'shared/TooltipEmailText'
 import { eyeIcon } from '../../../../public/assets/icons/eye-icon'
+import debounce from 'debounce'
 
 type Inputs = {
   email: string
@@ -51,6 +54,17 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
   const watchEmail = watch('email')
   const watchPassword = watch('password')
   console.log(watchEmail)
+
+  const onChangeEmail = () => {
+    debounce(() => {
+      watch('email')
+    }, 300)
+  }
+  const onChangePassword = () => {
+    debounce(() => {
+      watch('password')
+    }, 300)
+  }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     return new Promise((res) => {
@@ -187,6 +201,7 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
                       message: 'Invalid email address',
                     },
                   })}
+                  onChange={onChangeEmail}
                 />
                 {!errors.email && watchEmail && isSubmitting && (
                   <InputRightElement
@@ -247,6 +262,7 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
                     },
                     required: 'This is required',
                   })}
+                  onChange={onChangePassword}
                 />
                 {!errors.password && watchPassword && isSubmitting ? (
                   <InputRightElement

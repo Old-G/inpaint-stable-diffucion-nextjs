@@ -1149,6 +1149,11 @@
   dependencies:
     tslib "^2.4.0"
 
+"@types/debounce@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@types/debounce/-/debounce-1.2.1.tgz#79b65710bc8b6d44094d286aecf38e44f9627852"
+  integrity sha512-epMsEE85fi4lfmJUH/89/iV/LI+F5CvNIvmgs5g5jYFPfhO2S/ae8WSsLOKWdwtoaZw9Q2IhJ4tQ5tFCcS/4HA==
+
 "@types/hoist-non-react-statics@^3.3.1":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
@@ -1216,47 +1221,47 @@
   integrity sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==
 
 "@typescript-eslint/parser@^5.42.0":
-  version "5.54.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.54.0.tgz#def186eb1b1dbd0439df0dacc44fb6d8d5c417fe"
-  integrity sha512-aAVL3Mu2qTi+h/r04WI/5PfNWvO6pdhpeMRWk9R7rEV4mwJNzoWf5CCU5vDKBsPIFQFjEq1xg7XBI2rjiMXQbQ==
+  version "5.54.1"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.54.1.tgz#05761d7f777ef1c37c971d3af6631715099b084c"
+  integrity sha512-8zaIXJp/nG9Ff9vQNh7TI+C3nA6q6iIsGJ4B4L6MhZ7mHnTMR4YP5vp2xydmFXIy8rpyIVbNAG44871LMt6ujg==
   dependencies:
-    "@typescript-eslint/scope-manager" "5.54.0"
-    "@typescript-eslint/types" "5.54.0"
-    "@typescript-eslint/typescript-estree" "5.54.0"
+    "@typescript-eslint/scope-manager" "5.54.1"
+    "@typescript-eslint/types" "5.54.1"
+    "@typescript-eslint/typescript-estree" "5.54.1"
     debug "^4.3.4"
 
-"@typescript-eslint/scope-manager@5.54.0":
-  version "5.54.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/scope-manager/-/scope-manager-5.54.0.tgz#74b28ac9a3fc8166f04e806c957adb8c1fd00536"
-  integrity sha512-VTPYNZ7vaWtYna9M4oD42zENOBrb+ZYyCNdFs949GcN8Miwn37b8b7eMj+EZaq7VK9fx0Jd+JhmkhjFhvnovhg==
+"@typescript-eslint/scope-manager@5.54.1":
+  version "5.54.1"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/scope-manager/-/scope-manager-5.54.1.tgz#6d864b4915741c608a58ce9912edf5a02bb58735"
+  integrity sha512-zWKuGliXxvuxyM71UA/EcPxaviw39dB2504LqAmFDjmkpO8qNLHcmzlh6pbHs1h/7YQ9bnsO8CCcYCSA8sykUg==
   dependencies:
-    "@typescript-eslint/types" "5.54.0"
-    "@typescript-eslint/visitor-keys" "5.54.0"
+    "@typescript-eslint/types" "5.54.1"
+    "@typescript-eslint/visitor-keys" "5.54.1"
 
-"@typescript-eslint/types@5.54.0":
-  version "5.54.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-5.54.0.tgz#7d519df01f50739254d89378e0dcac504cab2740"
-  integrity sha512-nExy+fDCBEgqblasfeE3aQ3NuafBUxZxgxXcYfzYRZFHdVvk5q60KhCSkG0noHgHRo/xQ/BOzURLZAafFpTkmQ==
+"@typescript-eslint/types@5.54.1":
+  version "5.54.1"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-5.54.1.tgz#29fbac29a716d0f08c62fe5de70c9b6735de215c"
+  integrity sha512-G9+1vVazrfAfbtmCapJX8jRo2E4MDXxgm/IMOF4oGh3kq7XuK3JRkOg6y2Qu1VsTRmWETyTkWt1wxy7X7/yLkw==
 
-"@typescript-eslint/typescript-estree@5.54.0":
-  version "5.54.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-5.54.0.tgz#f6f3440cabee8a43a0b25fa498213ebb61fdfe99"
-  integrity sha512-X2rJG97Wj/VRo5YxJ8Qx26Zqf0RRKsVHd4sav8NElhbZzhpBI8jU54i6hfo9eheumj4oO4dcRN1B/zIVEqR/MQ==
+"@typescript-eslint/typescript-estree@5.54.1":
+  version "5.54.1"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-5.54.1.tgz#df7b6ae05fd8fef724a87afa7e2f57fa4a599be1"
+  integrity sha512-bjK5t+S6ffHnVwA0qRPTZrxKSaFYocwFIkZx5k7pvWfsB1I57pO/0M0Skatzzw1sCkjJ83AfGTL0oFIFiDX3bg==
   dependencies:
-    "@typescript-eslint/types" "5.54.0"
-    "@typescript-eslint/visitor-keys" "5.54.0"
+    "@typescript-eslint/types" "5.54.1"
+    "@typescript-eslint/visitor-keys" "5.54.1"
     debug "^4.3.4"
     globby "^11.1.0"
     is-glob "^4.0.3"
     semver "^7.3.7"
     tsutils "^3.21.0"
 
-"@typescript-eslint/visitor-keys@5.54.0":
-  version "5.54.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-5.54.0.tgz#846878afbf0cd67c19cfa8d75947383d4490db8f"
-  integrity sha512-xu4wT7aRCakGINTLGeyGqDn+78BwFlggwBjnHa1ar/KaGagnmwLYmlrXIrgAaQ3AE1Vd6nLfKASm7LrFHNbKGA==
+"@typescript-eslint/visitor-keys@5.54.1":
+  version "5.54.1"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-5.54.1.tgz#d7a8a0f7181d6ac748f4d47b2306e0513b98bf8b"
+  integrity sha512-q8iSoHTgwCfgcRJ2l2x+xCbu8nBlRAlsQ33k24Adj8eoVBE0f8dUeI+bAa8F84Mv05UGbAx57g2zrRsYIooqQg==
   dependencies:
-    "@typescript-eslint/types" "5.54.0"
+    "@typescript-eslint/types" "5.54.1"
     eslint-visitor-keys "^3.3.0"
 
 "@zag-js/element-size@0.3.1":
@@ -1319,9 +1324,9 @@ argparse@^2.0.1:
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
 aria-hidden@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/aria-hidden/-/aria-hidden-1.2.2.tgz#8c4f7cc88d73ca42114106fdf6f47e68d31475b8"
-  integrity sha512-6y/ogyDTk/7YAe91T3E2PR1ALVKyM2QbTio5HwM+N1Q6CMlCKhvClyIjkckBswa0f2xJhjsfzIGa1yVSe1UMVA==
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/aria-hidden/-/aria-hidden-1.2.3.tgz#14aeb7fb692bbb72d69bebfa47279c1fd725e954"
+  integrity sha512-xcLxITLe2HYa1cnYnwCjkOO1PqUHQpozB8x9AR0OgWN2woOBi5kSDVxKfd0b7sb1hw5qFeJhXm9H1nu3xSfLeQ==
   dependencies:
     tslib "^2.0.0"
 
@@ -1449,9 +1454,9 @@ callsites@^3.0.0:
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
 
 caniuse-lite@^1.0.30001406:
-  version "1.0.30001460"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001460.tgz#31d2e26f0a2309860ed3eff154e03890d9d851a7"
-  integrity sha512-Bud7abqjvEjipUkpLs4D7gR0l8hBYBHoa+tGtKJHvT2AYzLp1z7EmVkUT4ERpVUfca8S2HGIVs883D8pUH1ZzQ==
+  version "1.0.30001464"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001464.tgz#888922718df48ce5e33dcfe1a2af7d42676c5eb7"
+  integrity sha512-oww27MtUmusatpRpCGSOneQk2/l5czXANDSFvsc7VuOQ86s3ANhZetpwXNf1zY/zdfP63Xvjz325DAdAoES13g==
 
 chalk@^2.0.0:
   version "2.4.2"
@@ -1562,6 +1567,11 @@ damerau-levenshtein@^1.0.8:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.8.tgz#b43d286ccbd36bc5b2f7ed41caf2d0aba1f8a6e7"
   integrity sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==
+
+debounce@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.1.tgz#38881d8f4166a5c5848020c11827b834bcb3e0a5"
+  integrity sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==
 
 debug@^3.2.7:
   version "3.2.7"
@@ -2065,9 +2075,9 @@ for-each@^0.3.3:
     is-callable "^1.1.3"
 
 framer-motion@^10.0.1:
-  version "10.0.1"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-10.0.1.tgz#62cadfb9ed80599ac9b1c1699dc4e1164c3133c5"
-  integrity sha512-/N7gBA9gH8PkStyNQ67P/lx8UhL/7Y8z9Ku7FfgOF77sSG8wu8781kX7I5ZUgflRRtQXo8qH4Rev23004G1zcQ==
+  version "10.2.3"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-10.2.3.tgz#80ac552648f05b707d0595be5e87551aa673689a"
+  integrity sha512-+TBxfia8Ym/lYSvTAhome7LYFIR8fKhImuln5zcp9D8nFI2wNSDdBRtK5WoWTyjHXJ7efv5xv376Ma85zHhtUg==
   dependencies:
     tslib "^2.4.0"
   optionalDependencies:
@@ -2931,9 +2941,9 @@ react-focus-lock@^2.9.2:
     use-sidecar "^1.1.2"
 
 react-hook-form@^7.43.4:
-  version "7.43.4"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.43.4.tgz#32c12cce916e2ba50178148a5ef5acffeaae2a3e"
-  integrity sha512-JZp05wvmuV8qr3NNDWwyhiQL05sh9E8x/2NoWtkdiyyiezmwOr5pKexlvbCEfBMa7ZYrvzk88G/uhLl47T9b7Q==
+  version "7.43.5"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.43.5.tgz#b320405594f1506d8d57b954383166d4ff563778"
+  integrity sha512-YcaXhuFHoOPipu5pC7ckxrLrialiOcU91pKu8P+isAcXZyMgByUK9PkI9j5fENO4+6XU5PwWXRGMIFlk9u9UBQ==
 
 react-icons@^4.8.0:
   version "4.8.0"

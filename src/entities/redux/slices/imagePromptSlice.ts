@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface ImagePromptState {
-  value: null
+  value: string
 }
 
 const initialState: ImagePromptState = {
-  value: null,
+  value: '',
 }
 
 export const imagePromptSlice = createSlice({
   name: 'imagePrompt',
   initialState,
   reducers: {
-    imagePrompt: (state: ImagePromptState, action: PayloadAction<null>) => {
+    imagePrompt: (state: ImagePromptState, action: PayloadAction<string>) => {
       state.value = action.payload
     },
   },
