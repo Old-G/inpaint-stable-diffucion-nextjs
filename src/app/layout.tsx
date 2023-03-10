@@ -2,6 +2,9 @@
 
 import Providers from './providers'
 import './globals.css'
+import { Sidebar } from 'widgets/Sidebar'
+import { AuthLayout } from 'features/AuthLayout'
+import { Layout } from 'features/Layout'
 
 export default function RootLayout({
   children,
@@ -13,8 +16,11 @@ export default function RootLayout({
       <head />
       <body>
         <Providers>
-          {/* <LoadingPerPage /> */}
-          {children}
+          <AuthLayout>
+            <Sidebar />
+
+            <Layout>{children}</Layout>
+          </AuthLayout>
         </Providers>
       </body>
     </html>

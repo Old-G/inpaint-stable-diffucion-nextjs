@@ -30,6 +30,9 @@ import { notesIcon } from '../../../../public/assets/icons/notes-icon'
 import { eyeIcon } from '../../../../public/assets/icons/eye-icon'
 import { TooltipConfirmPasswordText } from 'shared/TooltipConfirmPasswordText'
 import { debounce } from 'debounce'
+import { useAppDispatch } from 'entities/redux/store'
+import { isSession } from 'entities/redux/slices/isSessionSlice'
+import { ButtonComp } from 'shared/ButtonComp'
 
 type Inputs = {
   name: string
@@ -47,6 +50,8 @@ export const SignUpForm = ({ handleSignIn }: SignInFormProps) => {
   const [isHovering, setIsHovering] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+  const dispatch = useAppDispatch()
 
   const {
     handleSubmit,
@@ -80,13 +85,13 @@ export const SignUpForm = ({ handleSignIn }: SignInFormProps) => {
   const watchEmail = watch('email')
   const watchPassword = watch('password', '')
   const watchConfirmPassword = watch('confirmPassword')
-  console.log(name)
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     return new Promise((res) => {
       setTimeout(() => {
         try {
           console.log(JSON.stringify(data, null, 2))
+          dispatch(isSession(true))
           // @ts-ignore
           res()
         } catch (error) {
@@ -412,24 +417,7 @@ export const SignUpForm = ({ handleSignIn }: SignInFormProps) => {
             </FormControl>
           </VStack>
 
-          <Button
-            bgColor={'#D8246C'}
-            color={'white'}
-            w='100%'
-            h='44px'
-            border={'1px solid #cccccc'}
-            borderRadius={'5px'}
-            fontSize={'16px'}
-            lineHeight={'19px'}
-            fontWeight={500}
-            isLoading={isSubmitting}
-            type='submit'
-            loadingText='Submitting'
-            transition={'all .2s ease-in-out'}
-            _hover={{ transform: 'scale(1.03)' }}
-          >
-            Create Account
-          </Button>
+          <ButtonComp text={'Create account'} active isLoading={isSubmitting} />
         </form>
       </Flex>
 
@@ -443,22 +431,7 @@ export const SignUpForm = ({ handleSignIn }: SignInFormProps) => {
         I already have an account
       </Text>
 
-      <Button
-        bgColor={'white'}
-        color={'#262C40'}
-        w='100%'
-        h='44px'
-        border={'1px solid #D8246C'}
-        borderRadius={'5px'}
-        fontSize={'16px'}
-        lineHeight={'19px'}
-        fontWeight={500}
-        transition={'all .2s ease-in-out'}
-        _hover={{ transform: 'scale(1.03)' }}
-        onClick={handleSignIn}
-      >
-        Sign In
-      </Button>
+      <ButtonComp text={'Sign in'} onClick={handleSignIn} />
     </Flex>
   )
 }

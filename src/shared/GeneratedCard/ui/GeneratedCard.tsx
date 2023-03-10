@@ -50,7 +50,7 @@ export const GeneratedCard = ({ image, idx }: GeneratedCardProps) => {
             m='auto 0'
           />
 
-          <CanvasFooter idx={idx} />
+          <CanvasFooter idx={idx} image={image} />
         </Flex>
       ) : (
         <Flex
@@ -87,7 +87,7 @@ export const GeneratedCard = ({ image, idx }: GeneratedCardProps) => {
                 m='auto 0'
               />
 
-              <CanvasFooter idx={idx} />
+              <CanvasFooter idx={idx} image={image} />
             </Flex>
           </Flex>
           <Flex

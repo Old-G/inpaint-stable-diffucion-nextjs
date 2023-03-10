@@ -44,7 +44,7 @@ type PalletBlockProps = {
   }[]
 }
 
-const url = 'http://localhost:3000/api/prompts'
+const url = process.env.NEXT_PUBLIC_API_PREDICTS_URL_LOCAL
 
 export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
   const [colorId, setColorId] = useState(9)
@@ -104,15 +104,16 @@ export const PalletBlock = ({ colors, styles }: PalletBlockProps) => {
       // const body = await fetchBody(image, inputText, stylesChoose, color, mask)
       const image = await convertToBase64(imageFilePrompt)
 
-      const data = await fetch(url, {
+      const data = await fetch(`${url}`, {
         method: 'POST',
         body: JSON.stringify({
           init_images: [`${image ? image : mask}`],
           prompt: `${inputText} ${
             color && 'color' + ' ' + color
           } ${stylesChoose}`,
-          styles: [`${stylesChoose}`],
-          // batch_size: 4,
+          // styles: [`${stylesChoose}`],
+          batch_size: 4,
+          // batch_count: 4,
           mask: `${mask}`,
           init_img_with_mask: [`${image}`, `${mask}`],
           // mode: 2,

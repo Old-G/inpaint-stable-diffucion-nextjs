@@ -15,9 +15,10 @@ import { trashIcon } from '../../../../public/assets/icons/trash-icon'
 
 type CanvasFooterProps = {
   idx: number
+  image: string
 }
 
-export const CanvasFooter = ({ idx }: CanvasFooterProps) => {
+export const CanvasFooter = ({ idx, image }: CanvasFooterProps) => {
   const dispatch = useAppDispatch()
 
   const result = useAppSelector((state) => state?.resultPrompt?.value)
@@ -70,7 +71,7 @@ export const CanvasFooter = ({ idx }: CanvasFooterProps) => {
       </Button>
       <Button
         as={'a'}
-        href='/images/myw3schoolsimage.jpg'
+        href={`data:image/png;base64,${image}`}
         download
         color={'#262C40'}
         fontSize={'20px'}

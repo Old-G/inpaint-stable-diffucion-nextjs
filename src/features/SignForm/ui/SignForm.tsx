@@ -7,12 +7,16 @@ import {
   VStack,
   keyframes,
   Button,
+  Box,
+  Link,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { ButtonComp } from 'shared/ButtonComp'
 
 type SignFormProps = {
   handleSignIn: () => void
   handleSignUp: () => void
+  handleForgotPassword: () => void
   isSignForm: boolean
 }
 
@@ -20,12 +24,22 @@ export const SignForm = ({
   handleSignIn,
   isSignForm,
   handleSignUp,
+  handleForgotPassword,
 }: SignFormProps) => {
+  const [isHovering, setIsHovering] = useState(false)
   const [isH3, setIsH3] = useState(false)
   const [isH1, setIsH1] = useState(false)
   const [isH2, setIsH2] = useState(false)
   const [isH2Second, setIsH2Second] = useState(false)
   const [isAnimation, setIsAnimation] = useState(false)
+
+  const handleMouseOver = () => {
+    setIsHovering(true)
+  }
+
+  const handleMouseOut = () => {
+    setIsHovering(false)
+  }
 
   useEffect(() => {
     const startH3 = setTimeout(() => setIsH3(true), 300)
@@ -72,27 +86,30 @@ export const SignForm = ({
 
         transition={'all 1s ease-in'}
         mr={'50px'}
+        spacing={'30px'}
       >
         <Flex w={'100%'} justify={'end'}>
-          <Heading
-            as={'h3'}
-            color={'#262C40'}
-            fontSize={'16px'}
-            lineHeight={'19px'}
-            fontWeight={500}
-            p='6.5px 27px'
-            bgColor={'white'}
-            borderRadius={'19px'}
-            shadow={'0px 2px 10px rgba(0, 0, 0, 0.05)'}
-            textTransform={'uppercase'}
-            opacity={isH3 ? 1 : 0}
-            w={'215px'}
-            textAlign={'center'}
-            whiteSpace={'nowrap'}
-            transition={'all 0.5s ease-in'}
-          >
-            Our goal is simple
-          </Heading>
+          <Box>
+            <Heading
+              as={'h3'}
+              color={'#262C40'}
+              fontSize={'16px'}
+              lineHeight={'19px'}
+              fontWeight={500}
+              p='6.5px 27px'
+              bgColor={'white'}
+              borderRadius={'19px'}
+              shadow={'0px 2px 10px rgba(0, 0, 0, 0.05)'}
+              textTransform={'uppercase'}
+              opacity={isH3 ? 1 : 0}
+              w={'215px'}
+              textAlign={'center'}
+              whiteSpace={'nowrap'}
+              transition={'all 0.5s ease-in'}
+            >
+              Our goal is simple
+            </Heading>
+          </Box>
         </Flex>
         <Flex w={'100%'} justify={'end'}>
           <Heading
@@ -105,7 +122,7 @@ export const SignForm = ({
             w={isAnimation ? '610px' : '100%'}
             textAlign={'center'}
             whiteSpace={'nowrap'}
-            transition={'width 0.8s ease-in'}
+            transition={'all 0.8s ease-in'}
           >
             Helping you to Create
           </Heading>
@@ -124,7 +141,7 @@ export const SignForm = ({
             w={isAnimation ? '430px' : '100%'}
             textAlign={'center'}
             whiteSpace={'nowrap'}
-            transition={'width 0.8s ease-in'}
+            transition={'all 0.8s ease-in'}
           >
             Your Best Look
           </Heading>
@@ -143,46 +160,71 @@ export const SignForm = ({
             w={isAnimation ? '260px' : '100%'}
             textAlign={'center'}
             whiteSpace={'nowrap'}
-            transition={'width 0.8s ease-in'}
+            transition={'all 0.8s ease-in'}
           >
             out NOW
           </Heading>
         </Flex>
-        <HStack align={'center'} p={'40px 80px'} spacing={'70px'}>
-          <Button
-            bgColor={'#D8246C'}
-            color={'white'}
-            p={'0px 105px'}
-            h='32px'
-            border={'1px solid #cccccc'}
-            borderRadius={'5px'}
-            fontSize={'16px'}
-            lineHeight={'19px'}
-            fontWeight={500}
-            textTransform={'uppercase'}
+        <HStack align={''} pt={'0px'} spacing={'70px'}>
+          <ButtonComp
+            text={'Sign Up'}
+            active
+            uppercase
+            height={'32px'}
             onClick={handleSignUp}
-            transition='all .2s ease-in-out'
-            _hover={{ bgColor: '#D8246C', transform: 'scale(1.1)' }}
-          >
-            Sign Up
-          </Button>
-          <Button
-            bgColor={'white'}
-            color={'#262C40'}
-            p={'0px 105px'}
-            h='32px'
-            border={'1px solid #cccccc'}
-            borderRadius={'5px'}
-            fontSize={'16px'}
-            lineHeight={'19px'}
-            fontWeight={500}
-            textTransform={'uppercase'}
-            onClick={handleSignIn}
-            transition='all .2s ease-in-out'
-            _hover={{ bgColor: '#ffffff', transform: 'scale(1.1)' }}
-          >
-            Sign In
-          </Button>
+          />
+
+          <Flex direction={'column'} position={'relative'}>
+            <ButtonComp
+              text={'Sign In'}
+              uppercase
+              height={'32px'}
+              onClick={handleSignIn}
+              borderCCC
+            />
+
+            <Flex
+              align={'center'}
+              position={'absolute'}
+              bottom={'-35px'}
+              left={'30px'}
+            >
+              <Flex align={'center'} position='relative'>
+                <Text
+                  fontSize={'16px'}
+                  lineHeight={'19px'}
+                  fontWeight={500}
+                  color={'#696C7D'}
+                  mr={'5px'}
+                >
+                  Forgot password?
+                </Text>
+                <Text
+                  cursor={'pointer'}
+                  fontSize={'16px'}
+                  lineHeight={'19px'}
+                  fontWeight={500}
+                  color={'#D8246C'}
+                  _hover={{ textDecoration: 'none' }}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
+                  onClick={handleForgotPassword}
+                >
+                  Click here
+                </Text>
+
+                <Image
+                  src={'/assets/icons/cat-left-icon.png'}
+                  alt='cat'
+                  position={'absolute'}
+                  top={'30px'}
+                  right={'35px'}
+                  opacity={isHovering ? 1 : 0}
+                  transition={'opacity 0.3s ease-in-out'}
+                />
+              </Flex>
+            </Flex>
+          </Flex>
         </HStack>
       </VStack>
 

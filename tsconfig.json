@@ -37,7 +37,8 @@
     "**/*.js",
     "**/*.jsx",
     ".next/types/**/*.ts",
-    "/Users/glebzavalov/Desktop/Projects/MyLookBest/nextjs-sd-my-look/.next/types/**/*.ts"
+    "/Users/glebzavalov/Desktop/Projects/MyLookBest/nextjs-sd-my-look/.next/types/**/*.ts",
+    "/Users/glebzavalov/Desktop/Projects/MyLookBest/front/.next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

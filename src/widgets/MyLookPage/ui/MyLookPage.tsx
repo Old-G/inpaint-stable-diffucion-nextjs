@@ -16,12 +16,15 @@ import { imagePrompt } from 'entities/redux/slices/imagePromptSlice'
 import { isMakeMagic } from 'entities/redux/slices/isMakeMagicSlice'
 import { maskPrompt } from 'entities/redux/slices/maskPromptSlice'
 import { GeneratedCard } from 'shared/GeneratedCard'
+import useDebounce from 'entities/hooks/useDebounce'
 
 export const MyLookPage = () => {
   const [canvasImage, setCanvasImage] = useState<any>('')
   const [canvasImageMask, setCanvasImageMask] = useState<any>('')
   const dispatch = useAppDispatch()
   const toast = useToast()
+  const debounceImage = useDebounce(canvasImage)
+  const debounceMask = useDebounce(canvasImageMask)
 
   const result = useAppSelector((state) => state?.resultPrompt?.value)
 
@@ -46,13 +49,13 @@ export const MyLookPage = () => {
   }, [canvasImage, dispatch, toast])
 
   useEffect(() => {
-    if (canvasImage) {
-      dispatch(imagePrompt(canvasImage))
-    }
-    if (canvasImageMask) {
-      dispatch(maskPrompt(canvasImageMask))
-    }
-  }, [canvasImage, canvasImageMask, dispatch])
+    // if (debounceImage) {
+    //   dispatch(imagePrompt(canvasImage))
+    // }
+    // if (debounceMask) {
+    //   dispatch(maskPrompt(canvasImageMask))
+    // }
+  }, [canvasImage, canvasImageMask, debounceImage, debounceMask, dispatch])
 
   // const handleDelete = (idx: number) => {
   //   const filteredItems = result?.filter((item: number) => item !== idx)
@@ -66,19 +69,18 @@ export const MyLookPage = () => {
   // }
 
   return (
-    <VStack
-      w='calc(100vw - 340px)'
-      minH='100vh'
+    <Flex
+      w={'100%'}
+      h={'100%'}
       justify={'center'}
-      align='center'
-      flexGrow={1}
+      align={'center'}
+      direction={'column'}
     >
       {result?.length ? (
         <Wrap
           w={'100%'}
           h={'100%'}
           spacing={'15px'}
-          p={'30px'}
           align={'center'}
           justifySelf={'flex-start'}
         >
@@ -145,6 +147,6 @@ export const MyLookPage = () => {
           )}
         </>
       )}
-    </VStack>
+    </Flex>
   )
 }

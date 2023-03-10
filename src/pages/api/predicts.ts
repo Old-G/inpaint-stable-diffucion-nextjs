@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 const database: { result: any }[] = []
 
+const url = process.env.NEXT_PUBLIC_API_STABLE_DIFFUSION_URL_LOCAL
+
 async function sendPostToStable(
   imageFilePrompt: string,
   prompt?: string,
@@ -11,9 +13,10 @@ async function sendPostToStable(
   init_img_with_mask?: string,
   mode?: number,
   n_iter?: number,
-  script_args?: []
+  script_args?: [],
+  batch_count?: number
 ) {
-  const response = await fetch('http://127.0.0.1:7860/sdapi/v1/img2img', {
+  const response = await fetch(`${url}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -28,6 +31,7 @@ async function sendPostToStable(
       mode: mode,
       n_iter: n_iter,
       script_args: script_args,
+      batch_count: batch_count,
     }),
   })
   const data = await response?.json()

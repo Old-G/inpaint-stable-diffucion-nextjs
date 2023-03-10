@@ -1,5 +1,5 @@
-import { AuthorizationPage } from '../widgets/AuthorizationPage'
+import { MyLookPage } from 'widgets/MyLookPage'
 
 export default function Home() {
-  return <AuthorizationPage />
+  return <MyLookPage />
 }

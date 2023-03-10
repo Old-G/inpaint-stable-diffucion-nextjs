@@ -23,12 +23,15 @@ import { emailIcon } from '../../../../public/assets/icons/email-icon'
 import { keyIcon } from '../../../../public/assets/icons/key-icon'
 import { starIcon } from '../../../../public/assets/icons/star-icon'
 import { infoIcon } from '../../../../public/assets/icons/info-icon'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { TooltipPasswordText } from 'shared/TooltipPasswordText'
 import { doneIcon } from '../../../../public/assets/icons/done-icon'
 import { TooltipEmailText } from 'shared/TooltipEmailText'
 import { eyeIcon } from '../../../../public/assets/icons/eye-icon'
 import debounce from 'debounce'
+import { useAppDispatch } from 'entities/redux/store'
+import { isSession } from 'entities/redux/slices/isSessionSlice'
+import { ButtonComp } from 'shared/ButtonComp'
 
 type Inputs = {
   email: string
@@ -38,11 +41,17 @@ type Inputs = {
 
 type SignInFormProps = {
   handleSignUp: () => void
+  handleForgotPassword: () => void
 }
 
-export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
+export const SignInForm = ({
+  handleSignUp,
+  handleForgotPassword,
+}: SignInFormProps) => {
   const [isHovering, setIsHovering] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+
+  const dispatch = useAppDispatch()
 
   const {
     handleSubmit,
@@ -53,7 +62,6 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
 
   const watchEmail = watch('email')
   const watchPassword = watch('password')
-  console.log(watchEmail)
 
   const onChangeEmail = () => {
     debounce(() => {
@@ -71,6 +79,7 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
       setTimeout(() => {
         try {
           console.log(JSON.stringify(data, null, 2))
+          dispatch(isSession(true))
           // @ts-ignore
           res()
         } catch (error) {
@@ -283,25 +292,7 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
             </FormControl>
           </VStack>
 
-          <Button
-            bgColor={'white'}
-            color={'#262C40'}
-            // p={'0px 105px'}
-            w='100%'
-            h='44px'
-            border={'1px solid #D8246C'}
-            borderRadius={'5px'}
-            fontSize={'16px'}
-            lineHeight={'19px'}
-            fontWeight={500}
-            isLoading={isSubmitting}
-            type='submit'
-            loadingText='Submitting'
-            transition={'all .2s ease-in-out'}
-            _hover={{ transform: 'scale(1.03)' }}
-          >
-            Sign In
-          </Button>
+          <ButtonComp text={'Sign In'} isLoading={isSubmitting} />
         </form>
       </Flex>
 
@@ -315,8 +306,8 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
         >
           Forgot password?
         </Text>
-        <Link
-          href={''}
+        <Text
+          cursor={'pointer'}
           fontSize={'12px'}
           lineHeight={'15px'}
           fontWeight={500}
@@ -324,9 +315,10 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
           _hover={{ textDecoration: 'none' }}
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
+          onClick={handleForgotPassword}
         >
           Click here
-        </Link>
+        </Text>
 
         <Image
           src={'/assets/icons/cat-icon.png'}
@@ -349,21 +341,7 @@ export const SignInForm = ({ handleSignUp }: SignInFormProps) => {
         I don't have an account
       </Text>
 
-      <Button
-        bgColor={'#D8246C'}
-        color={'white'}
-        // p={'0px 105px'}
-        w='100%'
-        h='44px'
-        border={'1px solid #cccccc'}
-        borderRadius={'5px'}
-        fontSize={'16px'}
-        lineHeight={'19px'}
-        fontWeight={500}
-        onClick={handleSignUp}
-      >
-        Create account
-      </Button>
+      <ButtonComp text={'Create account'} active onClick={handleSignUp} />
     </Flex>
   )
 }

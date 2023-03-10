@@ -222,7 +222,10 @@ export function Canvas({ canvasImage, setCanvasImageMask }: CanvasProps) {
                 >
                   <Flex align={'start'}>
                     <Text mr={'10px'}>Use eraser</Text>
-                    <Image src={'/assets/icons/eraser-icon.png'} />
+                    <Image
+                      src={'/assets/icons/eraser-icon.png'}
+                      alt={'eraser'}
+                    />
                     <Text ml={'10px'}>on any item of clothing</Text>
                   </Flex>
                   <Text> for a magical replacement</Text>
